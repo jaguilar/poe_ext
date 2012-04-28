@@ -14,6 +14,8 @@
     }
   },
 
+  "update_url": "https://github.com/jaguilar/poe_ext/raw/master/poe_updates.xml",
+
   // Add any of these that you need
   // "background": [ {
   //  "matches": [ "http://www.pathofexile.com/private-messages/inbox" ],
