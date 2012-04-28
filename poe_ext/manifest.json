@@ -1,7 +1,7 @@
 {
   // Required
   "name": "poe",
-  "version": "0.3",
+  "version": "0.4",
   "manifest_version": 2,
 
   // Recommended

@@ -107,7 +107,7 @@ function itemBaseType(item) {
 	if (item.rarity == 'rare') {
 		return item.name.split(' ').slice(2).join(' ')
 	}
-	if (item.rarity == 'magical') {
+	if (item.rarity == 'magic') {
 		// Split off the first word and everything after "of", these are suffix mods.
 		var baseType = item.name.split(' ');
 		var ofLocation = nameArray.indexOf('of');
@@ -130,7 +130,7 @@ function itemBaseType(item) {
 
 function itemRarity(item) {
 	if (item.className.search('Rare') != -1) { return 'rare'; }
-	if (item.className.search('Magical') != -1) { return 'magic'; }
+	if (item.className.search('Magic') != -1) { return 'magic'; }
 	if (item.className.search('Normal') != -1) { return 'normal'; }
 	return 'other';
 }
