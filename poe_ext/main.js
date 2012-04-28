@@ -65,9 +65,10 @@ function poll(charName, reschedule) {
 					out += sprintf('<th class="recipe" rowspan="%d">%s</th>', numRows, rule);
 				}
 				var match = matches[i];
-				out += sprintf('<td class="items">%s</td><td class="missing">%s</td></tr>',
-							   $.map(match.items, itemSpan).join('<br>'),
-							   match.missing != null ? match.missing.join('<br>') : '');
+				out += sprintf('<td class="items">%s</td>', $.map(match.items, itemSpan).join('<br>'))
+				out += sprintf('<td class="missing">%s</td>',
+							   (match.complete < 1 && match.missing != null) ? match.missing.join('<br>') : '');
+				out += '</tr>';
 			}
 			return out;
 		}).join('') + '</tbody></table>');

@@ -110,7 +110,7 @@ function itemBaseType(item) {
 	if (item.rarity == 'magic') {
 		// Split off the first word and everything after "of", these are suffix mods.
 		var baseType = item.name.split(' ');
-		var ofLocation = nameArray.indexOf('of');
+		var ofLocation = baseType.indexOf('of');
 		if (ofLocation >= 0) {
 			baseType = baseType.slice(ofLocation - 1);
 		}
