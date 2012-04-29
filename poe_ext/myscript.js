@@ -129,9 +129,11 @@ function itemBaseType(item) {
 }
 
 function itemRarity(item) {
+	if (item.className.search('Normal') != -1) { return 'normal'; }
 	if (item.className.search('Rare') != -1) { return 'rare'; }
 	if (item.className.search('Magic') != -1) { return 'magic'; }
-	if (item.className.search('Normal') != -1) { return 'normal'; }
+	if (item.className.search('Unique') != -1) { return 'unique'; }
+	if (item.className.search('Currency') != -1) { return 'currency'; }
 	return 'other';
 }
 

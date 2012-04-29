@@ -137,9 +137,20 @@ var BaseTypeMatch = Match.extend({
 	// We use this to score match completion, with each index getting descending amounts
 	// credit.
 	init: function(rarities, maxQuality) {
+		this.scores = {unique:4, rare:2, magical:1, normal: 1}
 		this.rarities = rarities;
 		this.maxQuality = maxQuality;
-		this.matches = {}
+		this.matches = {};
+		this.completeScore = this.scoreRarities(rarities);
+	},
+
+	// Score an array of rarities.
+	scoreRarities: function(r) {
+		var s = 0;
+		for (var i = 0; i < r.length; ++i) {
+			s += this.scores[r[i]];
+		}
+		return s;
 	},
 
 	take: function(i) {
@@ -164,19 +175,17 @@ var BaseTypeMatch = Match.extend({
 		return $.map(this.matches, function (v, k) {
 			var itemcredit = 0;
 			var missing = $.map(th.rarities, function(rarity, idx) {
-				if (rarity in v) {
-					// Inverse credit for a match by rarity.
-					itemcredit += th.rarities.length - idx;  
-				} else {
+				if (!(rarity in v)) {
 					return rarity;
 				}
 			})
+
 			return {items: v, 
 				    missing: $.merge([sprintf('%s%s with rarities:', 
 				    	                      k, 
 				    	                      th.maxQuality ? ' with %20 quality' : '')], 
 				                     [missing.join(', ')]), 
-				    complete: itemcredit * 1.0 / maxCredit };
+				    complete: 1 - (1.0 * th.scoreRarities(missing) / th.completeScore)};
 		});
 	}
 });
@@ -310,19 +319,19 @@ function allMatches(items) {
 	var results = {
 	};
 	var matchRules = $.map([
-		{result: "Gemcutter's Prism", matcher: new QualityMatch('skillGem'), lock:0.5},
+		{result: "Gemcutter's Prism", matcher: new QualityMatch('skillGem'), lock:0.5, display:0.3},
 		{result: "Regal Orb", matcher: new FullsetMatch('rare', true), lock: 0.2, display:0.1},
 		{result: "Divine Orb", matcher: SocketMatch(6, true)},
 		{result: "Jeweler's Orb", matcher: SocketMatch(6, false)},
 		{result: "Orb of Alchemy", matcher: new RarenameMatch(2), lock:0.51},
-		{result: "Orb of Alchemy", matcher: new BaseTypeMatch(['rare', 'magic', 'normal'], true), 
+		{result: "Orb of Alchemy", matcher: new BaseTypeMatch(['rare', 'magical', 'normal'], true), 
 		 lock:0.51},
 		{result: "Chaos Orb", matcher: new FullsetMatch('rare', false), lock: 0.6, display:0.3},
-		{result: "5x Orb of Chance", matcher: new BaseTypeMatch(['unique', 'rare', 'magic', 'normal']),
-		 lock:0.6, display: 0.5},
+		{result: "5x Orb of Chance", matcher: new BaseTypeMatch(['unique', 'rare', 'magical', 'normal']),
+		 lock:0.7, display: 0.5},
 		{result: "Chromatic Orb", matcher: TricolorMatch()},
-		{result: "Orb of Augmentation", matcher: new BaseTypeMatch(['rare', 'magic', 'normal'], false), 
-		 lock:0.65, display:0.49},
+		{result: "Orb of Augmentation", matcher: new BaseTypeMatch(['rare', 'magical', 'normal'], false), 
+		 lock:0.51},
 		{result: "Orb of Augmentation", matcher: RareModMatch(6)},
 		{result: "Armorer's Scrap", matcher: new QualityMatch('armor'), lock:0.98},
 		{result: "Blacksmith's Whetstone", matcher: new QualityMatch('weapon'), lock:0.98},
