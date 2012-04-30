@@ -139,7 +139,7 @@ function itemRarity(item) {
 
 function itemCategory(item) {
 	if (item.name.match(/flask|vial/i)) { return 'flask'; }
-	if (item.name.match(/belt|chain|sash/i)) { return 'flask'; }
+	if (item.name.match(/belt|chain|sash/i)) { return 'belt'; }
 	if (item.name.match(/\(Level \d+\)/i)) { return 'skillGem'; }
 	if (item.name.match(/ring/i)) { return 'ring'; }
 	if (item.name.match(/amulet/i)) { return 'amulet'; }
