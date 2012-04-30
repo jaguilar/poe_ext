@@ -368,7 +368,7 @@ function allMatches(items) {
 
 function locationFormat(i) {
 	if (i.location.section == 'character') { return 'char'; }
-	else { return sprintf('stash p%d', i.location.page); }
+	else { return sprintf('stash p%d', i.location.page + 1); }
 }
 
 function itemSpan(i) {
