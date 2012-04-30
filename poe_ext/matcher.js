@@ -233,13 +233,14 @@ var FullsetMatch = Match.extend({
 		return has;
 	},
 
-	// Pulls items in a "recipe" (a list of strings) from this.matchedParts into a second array.
+	// Pulls items in a "recipe" (a map of strings to counts) from this.matchedParts into a second array.
 	// This will be reported to the used.
 	extractItems: function(recipe) {
+		var th = this;
 		return $.map(recipe, function (v, k) {
-			var out = []
+			var out = [];
 			for (var countNeeded = v; countNeeded > 0; --countNeeded) {
-				out.push(this.matchedParts[k].pop());
+				out.push(th.matchedParts[k].pop());
 			};
 			return out;
 		});
