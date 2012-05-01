@@ -78,7 +78,7 @@ function poll(charName, reschedule) {
 	}).then(function () {
 		controls.removeAttr('disabled');
 		if (reschedule) {
-			timer = setTimeout(function() { poll(charName, true); }, 4 * 60 * 1000);
+			timer = setTimeout(function() { poll(charName, true); }, 10 * 60 * 1000);
 		}
 	});
 };
