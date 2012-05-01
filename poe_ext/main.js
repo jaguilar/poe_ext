@@ -37,7 +37,7 @@ function setDropdown(charResp) {
 		clearTimeout(timer);
 		var charName = $('#charDropDown').val();
 		if (charName != '') {
-			poll(charName, true);
+			poll(charName, false);
 			$('#pleaseSelect').hide();
 		} else {
 			$('#pleaseSelect').show();
