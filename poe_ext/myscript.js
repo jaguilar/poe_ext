@@ -138,12 +138,12 @@ function itemRarity(item) {
 }
 
 function itemCategory(item) {
-	if (item.name.match(/flask|vial/i)) { return 'flask'; }
-	if (item.name.match(/belt|chain|sash/i)) { return 'belt'; }
+	if (item.name.match(/\b(?:flask|vial)\b/i)) { return 'flask'; }
+	if (item.name.match(/\b(?:belt|chain|sash)\b/i)) { return 'belt'; }
 	if (item.name.match(/\(Level \d+\)/i)) { return 'skillGem'; }
-	if (item.name.match(/ring/i)) { return 'ring'; }
-	if (item.name.match(/amulet/i)) { return 'amulet'; }
-	if (item.name.match(/quiver/i)) { return 'quiver'; }
+	if (item.name.match(/\bring\b/i)) { return 'ring'; }
+	if (item.name.match(/\bamulet\b/i)) { return 'amulet'; }
+	if (item.name.match(/\bquiver\b/i)) { return 'quiver'; }
 	if (item.baseType in ITEM_TYPE_DATA) { return ITEM_TYPE_DATA[item.baseType]; }
 	return null;
 }
