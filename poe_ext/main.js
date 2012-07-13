@@ -1,4 +1,5 @@
 var timer = null;
+var itemMatches = [];
 
 $(document).ready(function () {
 	$('#spinner').ajaxStart(function() {
@@ -50,13 +51,54 @@ function showCharError() {
 				   'Path of Exile</a>.<p>Please sign in and refresh this page.');
 }
 
+function rareSearch(iName,items){
+    var result = []
+    for (var i = 0; i < items.length;i++){
+        if (items[i].rareName) {
+            var reg = new RegExp(iName,'m')
+            if (items[i].rareName.match(reg) != null){
+                    result.push(items[i]);
+            }    
+        }    
+    }
+    if (result.length > 0) {
+        return result
+    }else{
+        return null
+    }   
+}
+
 function poll(charName, reschedule) {
 	var controls = $.merge($('#charDropDown'), $('#refresh'));
 	controls.attr('disabled', 'disabled');
 	allItems(charName).done(function (items) {
 		var matches = allMatches(items);
+		var sout = "";
+		var iNames = []
+		iNames = $('#search').val().split("\n");
+                itemMatches = [];
+		for (var i = 0; i < iNames.length; i++){
+			var temp = rareSearch(iNames[i],items);
+			if (temp != null){
+			    itemMatches.push(temp);
+		        }
+		}
+			
+		if (itemMatches.length > 0) {
+	  		for (var i = 0; i < itemMatches.length; i++){
+        	  		sout += sprintf('<tr class="%s">',  i == itemMatches.length - 1 ? 'lastrow' : '');
+        	  		if ( i == 0) {sout += sprintf('<th class="recipe" rowspan="%d">%s</th>', itemMatches.length, 'Custom Search');}
+        	  		sout += sprintf('<td class="items">%s</td>', $.map(itemMatches[i], itemSpan).join('<br>'));
+        	    		sout += sprintf('<td class="missing">%s</td>','');
+        	    		sout += '</tr>';
+        	    	}
+		}
+			
+		
+			
+
 		$('#output').html('<table><tbody><tr><th></th><th>Matched</th><th>Missing</th>' + 
-			              $.map(matches, function (matches, rule) {
+			$.map(matches, function (matches, rule) {
 			var numRows = matches.length;
 			var out = '';
 			for (var i = 0; i < numRows; ++i) {
@@ -69,9 +111,11 @@ function poll(charName, reschedule) {
 				out += sprintf('<td class="missing">%s</td>',
 							   (match.complete < 1 && match.missing != null) ? match.missing.join('<br>') : '');
 				out += '</tr>';
+				
 			}
 			return out;
-		}).join('') + '</tbody></table>');
+		}).join('') + sout + '</tbody></table>');		              
+
 	}).fail(function () {
 		$('#err').html('Error requesting item data from path of exile. Please refresh ' +
 					   'the page and try again. If the error persists, contact the author.');
